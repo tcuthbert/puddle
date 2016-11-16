@@ -1,7 +1,9 @@
 package main
 
 import (
+	"./controllers"
 	"github.com/perthgophers/puddle/puddle"
+	"net/http"
 	"os"
 	"os/exec"
 )
@@ -30,4 +32,6 @@ func init() {
 
 func main() {
 	puddle.Run(SLACKTOKEN, GITTAG)
+	http.HandleFunc("/logs/", controllers.LogHandler)
+	http.ListenAndServe(":8080", nil)
 }
