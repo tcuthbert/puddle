@@ -1,7 +1,5 @@
 package models
 
-import ()
-
 type Message struct {
 	username string
 	msgTxt   string

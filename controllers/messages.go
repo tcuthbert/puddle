@@ -9,8 +9,8 @@ import (
 	"regexp"
 )
 
-var templates = template.Must(template.ParseFiles("log.html"))
-var validPath = regexp.MustCompile("^/(log)/([a-zA-Z0-9]+)$")
+var templates = template.Must(template.ParseFiles("views/log.html"))
+var validPath = regexp.MustCompile("^/(logs)/([a-zA-Z0-9]+)$")
 
 func getTitle(w http.ResponseWriter, r *http.Request) (string, error) {
 	m := validPath.FindStringSubmatch(r.URL.Path)
@@ -18,10 +18,9 @@ func getTitle(w http.ResponseWriter, r *http.Request) (string, error) {
 		http.NotFound(w, r)
 		return "", errors.New("Invalid Page Title")
 	}
-	return m[2], nil // The title is the second subexpression.
+	return m[2], nil
 }
 
-// error in the  pointer Page which is in the folder models of type Page?
 func loadPage(title string) (*models.Page, error) {
 	filename := title + ".txt"
 	body, err := ioutil.ReadFile(filename)
