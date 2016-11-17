@@ -31,8 +31,8 @@ func init() {
 }
 
 func main() {
-	http.HandleFunc("/logs/", controllers.LogHandler)
-	http.ListenAndServe(":8080", nil)
+	go http.HandleFunc("/logs/", controllers.LogHandler)
+	go http.ListenAndServe(":8080", nil)
 	puddle.Run(SLACKTOKEN, GITTAG)
 
 }

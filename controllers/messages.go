@@ -4,13 +4,21 @@ import (
 	"../models"
 	"errors"
 	"html/template"
+	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"regexp"
 )
 
 var templates = template.Must(template.ParseFiles("views/log.html"))
 var validPath = regexp.MustCompile("^/(logs)/([a-zA-Z0-9]+)$")
+
+var ErrorMsg *log.Logger
+
+func Init(errorHandle io.Writer) {
+	ErrorMsg = log.New(errorHandle, "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
+}
 
 func getTitle(w http.ResponseWriter, r *http.Request) (string, error) {
 	m := validPath.FindStringSubmatch(r.URL.Path)
@@ -32,6 +40,7 @@ func loadPage(title string) (*models.Page, error) {
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *models.Page) {
 	err := templates.ExecuteTemplate(w, "views/"+tmpl+".html", p)
+	ErrorMsg.Println("This is an error")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
